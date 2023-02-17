@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/nav_drawer"
+    android:background="@drawable/main_background"
+    android:layout_height="match_parent"
+    tools:openDrawer="start"
+    tools:context=".Activities.DashboardActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
+            android:gravity="center_horizontal"
+            app:title="You are offline"
+            app:titleTextColor="@color/white"
+            android:background="@color/theme_color" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/recycler_view"
+            android:layout_alignTop="@id/toolbar"
+            tools:listitem="@layout/single_paid_user_design"  />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:id="@+id/in_active_msg"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="IMPORTANT"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:gravity="center_horizontal"
+                android:id="@+id/status_meg"
+                android:text="Your profile is not active yet.\nPlease click below button to finish setting up your profile" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/status_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textAllCaps="false"
+                android:background="@drawable/hollow_white_circular_background"
+                android:paddingHorizontal="25dp"
+                android:text="Update Profile Now"
+                android:backgroundTint="@color/theme_color"
+                android:onClick="toProfileActivity"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/nav_menu"
+        app:menu="@menu/navigation_menu"
+        app:itemIconTint="@color/theme_color"
+        app:itemTextColor="@color/theme_color"
+        app:headerLayout="@layout/nav_header_layout"
+        android:layout_gravity="start" />
+</androidx.drawerlayout.widget.DrawerLayout>

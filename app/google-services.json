@@ -1,0 +1,105 @@
+{
+  "project_info": {
+    "project_number": "831468844179",
+    "project_id": "wayyeasy-57ee1",
+    "storage_bucket": "wayyeasy-57ee1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831468844179:android:772af9f7b9523a1d334966",
+        "android_client_info": {
+          "package_name": "com.wayyeasy.wayyeasydoctors"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831468844179-tgf74bv3cgoec36uk3fd2a3ah9dc2fg9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACrflOw39kQbz7Cm6AgTi8JTPATwvdREk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831468844179-tgf74bv3cgoec36uk3fd2a3ah9dc2fg9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831468844179:android:ed78d12f55bccc2b334966",
+        "android_client_info": {
+          "package_name": "com.wayyeasy.wayyeasydoctors"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831468844179-tgf74bv3cgoec36uk3fd2a3ah9dc2fg9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACrflOw39kQbz7Cm6AgTi8JTPATwvdREk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831468844179-tgf74bv3cgoec36uk3fd2a3ah9dc2fg9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831468844179:android:6ca5b5562c2608e3334966",
+        "android_client_info": {
+          "package_name": "com.wayyeasy.wayyeasydoctors"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831468844179-d7rq5gmcodbjlipmjjv3j7234ph44ka2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wayyeasy.wayyeasydoctors",
+            "certificate_hash": "621c2ccfdb26f1226b63fb61f06dbd506d2947fa"
+          }
+        },
+        {
+          "client_id": "831468844179-tgf74bv3cgoec36uk3fd2a3ah9dc2fg9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACrflOw39kQbz7Cm6AgTi8JTPATwvdREk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831468844179-tgf74bv3cgoec36uk3fd2a3ah9dc2fg9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

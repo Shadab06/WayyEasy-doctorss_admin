@@ -1,0 +1,27 @@
+.privacyContainer {
+    position: relative;
+    max-width: 95%;
+    min-height: 60vh;
+    box-shadow: 1px 1px 8px #c3c3c3;
+    border: 1px solid rgb(255, 255, 255);
+    margin: auto;
+    margin-bottom: 50px;
+    padding: 3% 5%;
+    margin-top: 10px;
+}
+
+hr {
+    margin-top: 60px;
+}
+
+.otherSection {
+    margin-top: 50px;
+}
+
+.otherSection ul li {
+    margin-top: 10px;
+}
+
+a {
+    text-decoration: none;
+}

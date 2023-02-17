@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">WayyEasy Doctors</string>
+    <string name="opened">open</string>
+    <string name="closed">close</string>
+
+    <string-array name="speciality">
+        <item>Allergists</item>
+        <item>Anesthesiologists</item>
+        <item>Anesthesists</item>
+        <item>Cardiologists</item>
+        <item>Chest Medicine</item>
+        <item>Colon and Rectal Surgeons</item>
+        <item>Critical Care Medicine Specialists</item>
+        <item>Dental</item>
+        <item>Dermatologists</item>
+        <item>ENT</item>
+        <item>Eye</item>
+        <item>Gastroenterologists</item>
+        <item>General Surgeons</item>
+        <item>General Surgery</item>
+        <item>Hematologists</item>
+        <item>Infectious Disease Specialists</item>
+        <item>Internists</item>
+        <item>Nephrologists</item>
+        <item>Neurologists</item>
+        <item>Obstetrics and Gynecologists</item>
+        <item>Oncologists</item>
+        <item>Ophthalmologists</item>
+        <item>Orthopedics</item>
+        <item>Pediatrics</item>
+        <item>Pathologists</item>
+        <item>Physiatrists</item>
+        <item>Plastic Surgeons</item>
+        <item>Radiologists</item>
+        <item>Rheumatologists</item>
+        <item>Urologists</item>
+    </string-array>
+</resources>

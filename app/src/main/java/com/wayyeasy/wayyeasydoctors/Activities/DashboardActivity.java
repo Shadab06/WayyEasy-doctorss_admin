@@ -43,7 +43,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DashboardActivity extends AppCompatActivity implements UsersListener {
+public class DashboardActivity extends AppCompatActivity {
 
     public static final String TAG = "Dashboard";
 
@@ -287,7 +287,7 @@ public class DashboardActivity extends AppCompatActivity implements UsersListene
                 if (response != null && response.isSuccessful() && response.body() != null && response.body().size() > 0) {
                     dashboard.recyclerView.setLayoutManager(new LinearLayoutManager(DashboardActivity.this));
                     List<user_booked_response_model> usersList = response.body();
-                    paidUsersList = new PaidUsersList(usersList, DashboardActivity.this, preferenceManager.getString(Constants.token));
+                    paidUsersList = new PaidUsersList(usersList, preferenceManager.getString(Constants.token));
                     dashboard.recyclerView.setAdapter(paidUsersList);
                 }
             }
@@ -299,26 +299,6 @@ public class DashboardActivity extends AppCompatActivity implements UsersListene
                 dialog.showDialog(DashboardActivity.this, getResources().getDrawable(R.drawable.ic_error), "Error", getResources().getColor(R.color.red), t.getMessage());
             }
         });
-    }
-
-    @Override
-    public void initializeVideoMeet(user_booked_response_model user) {
-        if (user != null) {
-            Intent intent = new Intent(DashboardActivity.this, OutgoingInvitation.class);
-            intent.putExtra("user", user);
-            intent.putExtra("type", "video");
-            startActivity(intent);
-        }
-    }
-
-    @Override
-    public void initializeAudioMeet(user_booked_response_model user) {
-        if (user != null) {
-            Intent intent = new Intent(DashboardActivity.this, OutgoingInvitation.class);
-            intent.putExtra("user", user);
-            intent.putExtra("type", "audio");
-            startActivity(intent);
-        }
     }
 
     @Override

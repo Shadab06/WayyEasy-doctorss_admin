@@ -46,7 +46,7 @@ public class SingleConsultationActivity extends AppCompatActivity {
             singleConsultation.userAge.setText(user.getAge());
             singleConsultation.consultation.setText(user.getConsultation());
 
-            String imgUrl = url + user.getProfileImage();
+            String imgUrl = url + "doctors/" + user.getProfileImage();
 
             GlideUrl glideUrl = new GlideUrl(imgUrl,
                     new LazyHeaders.Builder()
@@ -82,6 +82,7 @@ public class SingleConsultationActivity extends AppCompatActivity {
     public void addPrescription(View view) {
 
         Intent intent = new Intent(getApplicationContext(), PrescriptionActivity.class);
+        intent.putExtra("userId", user.getUserId());
         startActivity(intent);
     }
 }

@@ -5,6 +5,8 @@ import java.util.HashMap;
 public class Constants {
     public static final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
+
+    //        ------------------------------------------------------------------------
     //doctor details MongoDB
     public static final String name = "name";
     public static final String email = "email";
@@ -25,20 +27,28 @@ public class Constants {
     public static final String token = "token";
     public static final String role = "role";
 
+    // prescription Constants
+    public static final String prescriptionData = "prescriptionList";
+
+
+    //        ------------------------------------------------------------------------
     //firebase
     public static final String FIREBASE_DOCTORS_DB = "doctors";
     public static final String KEY_FCM_TOKEN = "fcmToken";
     public static final String KEY_FIREBASE_USER_ID = "firebaseId";
 
-    //mongodb
-    public static final String KEY_AUTHENTICATED_NUMBER = "mobile";
-    public static final String KEY_MONGO_TOKEN = "registered_token";
-    public static final String KEY_MONGO_ID = "registered_id";
 
+
+
+    //    ------------------------------------------------------------------------
     //shared preferences
     public static final String KEY_PREFERENCE_NAME_DOCTOR = "login_credentials";
     public static final String KEY_IS_DOCTOR_SIGNED_IN = "is_signed_in";
 
+
+
+
+    //        ------------------------------------------------------------------------
     //remote messaging
     public static final String REMOTE_MESSAGE_AUTHORIZATION = "Authorization";
     public static final String REMOTE_MESSAGE_CONTENT_TYPE = "Content-Type";

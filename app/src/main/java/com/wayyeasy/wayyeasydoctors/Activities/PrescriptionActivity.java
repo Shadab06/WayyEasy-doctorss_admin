@@ -3,6 +3,7 @@ package com.wayyeasy.wayyeasydoctors.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -10,25 +11,52 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
+import com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers;
+import com.wayyeasy.wayyeasydoctors.ComponentFiles.Constants.Constants;
+import com.wayyeasy.wayyeasydoctors.CustomDialogs.ProgressDialog;
+import com.wayyeasy.wayyeasydoctors.CustomDialogs.ResponseDialog;
 import com.wayyeasy.wayyeasydoctors.Models.prescription_response_model;
+import com.wayyeasy.wayyeasydoctors.Models.verify_response_model;
+import com.wayyeasy.wayyeasydoctors.Models.verify_response_model_sub;
 import com.wayyeasy.wayyeasydoctors.R;
+import com.wayyeasy.wayyeasydoctors.Utils.SharedPreferenceManager;
 import com.wayyeasy.wayyeasydoctors.databinding.ActivityPrescriptionBinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PrescriptionActivity extends AppCompatActivity {
 
     ActivityPrescriptionBinding prescriptionBinding;
 
+    public static final String TAG = "Prescription activity";
+
     List<String> medicineTypeList = new ArrayList<>();
     List<prescription_response_model> prescriptionItems = new ArrayList<>();
+
+    SharedPreferenceManager preferenceManager;
+    ProgressDialog progressDialog;
+    ResponseDialog dialog;
+
+    private String userId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prescriptionBinding = ActivityPrescriptionBinding.inflate(getLayoutInflater());
         setContentView(prescriptionBinding.getRoot());
+
+        preferenceManager = new SharedPreferenceManager(getApplicationContext());
+        progressDialog = new ProgressDialog(PrescriptionActivity.this);
+        dialog = new ResponseDialog();
+
+        userId = getIntent().getStringExtra("userId");
 
         medicineTypeList.add("Tab");
         medicineTypeList.add("Syrup");
@@ -67,9 +95,27 @@ public class PrescriptionActivity extends AppCompatActivity {
 
     public void submitPrescription(View view) {
         if (checkAllFiendsEntered()) {
-            for (int i = 0; i < prescriptionItems.size(); i++) {
-                Toast.makeText(this, prescriptionItems.get(i).getMedName() + ' ' + prescriptionItems.get(i).getMedDesc() + ' ' + prescriptionItems.get(i).getMedType(), Toast.LENGTH_SHORT).show();
-            }
+
+            Call<verify_response_model> call = ApiControllers.getInstance()
+                    .getApi()
+                    .addPrescription("Bearer " + preferenceManager.getString(Constants.token), userId, prescriptionItems);
+
+            call.enqueue(new Callback<verify_response_model>() {
+                @Override
+                public void onResponse(Call<verify_response_model> call, Response<verify_response_model> response) {
+                    if (response.body() != null && response.body().getMessage() != null)
+                        dialog.showDialog(PrescriptionActivity.this, getResources().getDrawable(R.drawable.ic_success), "Successful", getResources().getColor(R.color.red), response.body().getMessage());
+                    else
+                        dialog.showDialog(PrescriptionActivity.this, getResources().getDrawable(R.drawable.ic_found), "Failed", getResources().getColor(R.color.red), response.body().toString());
+                }
+
+                @Override
+                public void onFailure(Call<verify_response_model> call, Throwable t) {
+                    progressDialog.dismissDialog();
+                    Log.d(TAG, "onFailure: 219 " + t.getMessage());
+                    dialog.showDialog(PrescriptionActivity.this, getResources().getDrawable(R.drawable.ic_error), "Error", getResources().getColor(R.color.red), t.getMessage());
+                }
+            });
         }
     }
 

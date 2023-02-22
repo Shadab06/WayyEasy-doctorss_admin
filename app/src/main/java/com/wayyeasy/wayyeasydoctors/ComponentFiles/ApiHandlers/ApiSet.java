@@ -1,6 +1,7 @@
 package com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers;
 
 import com.wayyeasy.wayyeasydoctors.Models.RealtimeCalling.user_booked_response_model;
+import com.wayyeasy.wayyeasydoctors.Models.prescription_response_model;
 import com.wayyeasy.wayyeasydoctors.Models.verify_response_model;
 import com.wayyeasy.wayyeasydoctors.Models.verify_response_model_sub;
 
@@ -22,11 +23,6 @@ public interface ApiSet {
     @POST("physicians/login")
     Call<verify_response_model> login(@Body HashMap<String, String> map);
 
-    @PATCH("physicians/edit/{id}")
-    Call<verify_response_model> addFirebaseFCMToken(@Header("Authorization") String token,
-                                            @Path("id") String id,
-                                            @Body HashMap<String, String> fcmToken);
-
     @GET("physicians/getPhysiciansById/{physicianId}")
     Call<verify_response_model_sub> getPhysicianById(@Header("Authorization") String token,
                                                      @Path("physicianId") String physicianId);
@@ -34,6 +30,11 @@ public interface ApiSet {
     @GET("physicianBookedByUsers/getPhysiciansUsersById/{physicianId}")
     Call<List<user_booked_response_model>> getPhysicianPaidUsers(@Header("Authorization") String token,
                                                                  @Path("physicianId") String physicianId);
+
+    @POST("physicianBookedByUsers/addUserPrescriptions/{userId}")
+    Call<verify_response_model> addPrescription(@Header("Authorization") String token,
+                                                @Path("userId") String userId,
+                                                @Body List<prescription_response_model> data);
 
     @PATCH("physicians/updateToken")
     Call<Void> updateToken(@Header("Authorization") String token,

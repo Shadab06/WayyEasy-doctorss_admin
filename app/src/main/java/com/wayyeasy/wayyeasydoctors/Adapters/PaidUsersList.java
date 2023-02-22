@@ -23,7 +23,7 @@ import com.wayyeasy.wayyeasydoctors.R;
 
 import java.util.List;
 
-public class PaidUsersList  extends RecyclerView.Adapter<PaidUsersList.holder>{
+public class PaidUsersList extends RecyclerView.Adapter<PaidUsersList.holder> {
 
     private static final String TAG = "Close Data";
     List<user_booked_response_model> data;
@@ -53,7 +53,7 @@ public class PaidUsersList  extends RecyclerView.Adapter<PaidUsersList.holder>{
         else
             holder.consultation.setTextColor(holder.consultation.getContext().getResources().getColor(R.color.theme_color));
 
-        String imgUrl = url + data.get(position).getProfileImage();
+        String imgUrl = url + "doctors/" + data.get(position).getProfileImage();
 
         GlideUrl glideUrl = new GlideUrl(imgUrl,
                 new LazyHeaders.Builder()
@@ -79,6 +79,7 @@ public class PaidUsersList  extends RecyclerView.Adapter<PaidUsersList.holder>{
         ImageView userProfileImage;
         TextView userAge, userName, consultation;
         CardView singleItem;
+
         public holder(@NonNull View itemView) {
             super(itemView);
             userProfileImage = itemView.findViewById(R.id.user_profile_image);

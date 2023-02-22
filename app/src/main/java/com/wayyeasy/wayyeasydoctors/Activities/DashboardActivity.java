@@ -68,7 +68,7 @@ public class DashboardActivity extends AppCompatActivity {
         preferenceManager = new SharedPreferenceManager(getApplicationContext());
         progressDialog = new ProgressDialog(DashboardActivity.this);
         dialog = new ResponseDialog();
-        Log.d(TAG, "onCreate: 61 "+preferenceManager.getString(Constants.KEY_FCM_TOKEN));
+        Log.d(TAG, "onCreate: 61 " + preferenceManager.getString(Constants.KEY_FCM_TOKEN));
 
         if (preferenceManager.getBoolean(Constants.KEY_IS_DOCTOR_SIGNED_IN)) {
             if (preferenceManager.getString(Constants.status).equals("pending")) {
@@ -250,7 +250,7 @@ public class DashboardActivity extends AppCompatActivity {
 
             if (preferenceManager.getString(Constants.image) != null && preferenceManager.getString(Constants.image).length() > 0) {
 
-                String imgUrl = url + preferenceManager.getString(Constants.image);
+                String imgUrl = url + "doctors/" + preferenceManager.getString(Constants.image);
 
                 GlideUrl glideUrl = new GlideUrl(imgUrl,
                         new LazyHeaders.Builder()

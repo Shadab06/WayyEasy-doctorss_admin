@@ -3,14 +3,17 @@ package com.wayyeasy.wayyeasydoctors.Activities;
 import static com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers.url;
 
 import android.Manifest;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -37,6 +40,7 @@ import com.wayyeasy.wayyeasydoctors.databinding.ActivityProfileBinding;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -48,6 +52,8 @@ public class ProfileActivity extends AppCompatActivity {
     SharedPreferenceManager preferenceManager;
     ResponseDialog dialog;
     ProgressDialog progressDialog;
+
+    private int hours, minutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,26 +185,29 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         profileBinding.errorMsg.setVisibility(View.GONE);
-        generateFEMToken();
+//        uploadData(profileImage, docImage, profileBinding.specialityInput.getText().toString(), profileBinding.qualificationInput.getText().toString(), profileBinding.priceInput.getText().toString(), profileBinding.shiftStartInput.getText().toString(), profileBinding.shiftEndInput.getText().toString(), profileBinding.addressInput.getText().toString(), profileBinding.descriptionInput.getText().toString(), task.getResult());
+        generateFCMToken();
     }
 
-    private void generateFEMToken() {
+    private void generateFCMToken() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 progressDialog.showDialog();
-                uploadData(profileImage, docImage, profileBinding.specialityInput.getText().toString(), profileBinding.qualificationInput.getText().toString(), profileBinding.priceInput.getText().toString(), profileBinding.addressInput.getText().toString(), profileBinding.descriptionInput.getText().toString(), task.getResult());
+                uploadData(profileImage, docImage, profileBinding.specialityInput.getText().toString(), profileBinding.qualificationInput.getText().toString(), profileBinding.priceInput.getText().toString(), profileBinding.shiftStartInput.getText().toString(), profileBinding.shiftEndInput.getText().toString(), profileBinding.addressInput.getText().toString(), profileBinding.descriptionInput.getText().toString(), task.getResult());
             }
         });
     }
 
-    private void uploadData(String profileImage, String docImage, String speciality, String qualification, String price, String address, String desc, String token) {
-        if (speciality != null && qualification != null && price != null && address != null && desc != null) {
+    private void uploadData(String profileImage, String docImage, String speciality, String qualification, String price, String shiftStart, String shiftEnd, String address, String desc, String token) {
+        if (speciality != null && qualification != null && price != null && shiftStart != null && shiftEnd != null && address != null && desc != null) {
             HashMap<String, Object> userMap = new HashMap<>();
             userMap.put(Constants.image, profileImage);
             userMap.put(Constants.proofDocs, docImage);
             userMap.put(Constants.specialityType, speciality);
             userMap.put(Constants.qualification, qualification);
             userMap.put(Constants.price, price);
+            userMap.put(Constants.shiftStart, shiftStart);
+            userMap.put(Constants.shiftEnd, shiftEnd);
             userMap.put(Constants.address, address);
             userMap.put(Constants.description, desc);
             userMap.put(Constants.status, "pending");
@@ -288,6 +297,42 @@ public class ProfileActivity extends AppCompatActivity {
                 Glide.with(ProfileActivity.this).load(glideUrl).into(profileBinding.userProfile);
             }
         }
+    }
+
+    public void selectStartTime(View view) {
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(ProfileActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                hours = i;
+                minutes = i1;
+
+                Calendar calendar = Calendar.getInstance();
+
+                profileBinding.shiftStartInput.setText(DateFormat.format("hh:mm aa", calendar));
+            }
+        }, 12, 0, false);
+
+        timePickerDialog.updateTime(hours, minutes);
+        timePickerDialog.show();
+    }
+
+    public void selectEndTime(View view) {
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(ProfileActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                hours = i;
+                minutes = i1;
+
+                Calendar calendar = Calendar.getInstance();
+
+                profileBinding.shiftEndInput.setText(DateFormat.format("hh:mm aa", calendar));
+            }
+        }, 12, 0, false);
+
+        timePickerDialog.updateTime(hours, minutes);
+        timePickerDialog.show();
     }
 
     public void clearActivity(View view) {

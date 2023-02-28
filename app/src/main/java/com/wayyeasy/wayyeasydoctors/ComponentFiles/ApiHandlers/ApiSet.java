@@ -2,6 +2,7 @@ package com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers;
 
 import com.wayyeasy.wayyeasydoctors.Models.RealtimeCalling.user_booked_response_model;
 import com.wayyeasy.wayyeasydoctors.Models.prescription_response_model;
+import com.wayyeasy.wayyeasydoctors.Models.single_user_response_model;
 import com.wayyeasy.wayyeasydoctors.Models.verify_response_model;
 import com.wayyeasy.wayyeasydoctors.Models.verify_response_model_sub;
 
@@ -27,11 +28,11 @@ public interface ApiSet {
     Call<verify_response_model_sub> getPhysicianById(@Header("Authorization") String token,
                                                      @Path("physicianId") String physicianId);
 
-    @GET("physicianBookedByUsers/getPhysiciansUsersById/{physicianId}")
+    @GET("physicianBookedByUsers/getUsersUnderPhysician/{physicianId}")
     Call<List<user_booked_response_model>> getPhysicianPaidUsers(@Header("Authorization") String token,
                                                                  @Path("physicianId") String physicianId);
 
-    @POST("physicianBookedByUsers/addUserPrescriptions/{userId}")
+    @PATCH("physicianBookedByUsers/addUserPrescriptions/{userId}")
     Call<verify_response_model> addPrescription(@Header("Authorization") String token,
                                                 @Path("userId") String userId,
                                                 @Body List<prescription_response_model> data);
@@ -39,4 +40,8 @@ public interface ApiSet {
     @PATCH("physicians/updateToken")
     Call<Void> updateToken(@Header("Authorization") String token,
                            @Body HashMap<String, String> fcmToken);
+
+    @GET("user/fetchUserById/{userId}")
+    Call<single_user_response_model> fetchUser(@Header("Authorization") String token,
+                                               @Path("userId") String userId);
 }

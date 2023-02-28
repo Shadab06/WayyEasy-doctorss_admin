@@ -22,6 +22,8 @@ public class Constants {
     public static final String proofDocs = "proofDocs";
     public static final String address = "address";
     public static final String price = "price";
+    public static final String shiftStart = "shiftStart";
+    public static final String shiftEnd = "shiftEnd";
     public static final String isFull = "isFull";
     public static final String ratings = "ratings";
     public static final String token = "token";

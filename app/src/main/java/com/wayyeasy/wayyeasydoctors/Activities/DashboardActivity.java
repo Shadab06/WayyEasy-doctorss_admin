@@ -5,6 +5,7 @@ import static com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControl
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -299,6 +300,37 @@ public class DashboardActivity extends AppCompatActivity {
                 dialog.showDialog(DashboardActivity.this, getResources().getDrawable(R.drawable.ic_error), "Error", getResources().getColor(R.color.red), t.getMessage());
             }
         });
+    }
+
+//    --------- Social Media ---------------------------------------------------
+    public void openFacebook(View view) {
+        try {
+            Uri uri = Uri.parse("https://www.facebook.com/WayyEasy");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Cannot open url. Error: " + e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void openLinkedIn(View view) {
+        try {
+            Uri uri = Uri.parse("https://www.linkedin.com/company/wayyeasy/");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Cannot open url. Error: " + e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void openInstagram(View view) {
+        try {
+            Uri uri = Uri.parse("https://www.instagram.com/wayyeasy/");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Cannot open url. Error: " + e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

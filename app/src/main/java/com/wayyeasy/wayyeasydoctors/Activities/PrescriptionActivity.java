@@ -39,10 +39,14 @@ public class PrescriptionActivity extends AppCompatActivity {
 
     List<String> medicineTypeList = new ArrayList<>();
     List<prescription_response_model> prescriptionItems = new ArrayList<>();
+    List<prescription_response_model> userPrescription = new ArrayList<>();
 
     SharedPreferenceManager preferenceManager;
     ProgressDialog progressDialog;
     ResponseDialog dialog;
+
+    AutoCompleteTextView medicineType;
+    TextInputEditText medicineName, medicineDesc;
 
     private String userId = null;
 
@@ -57,6 +61,23 @@ public class PrescriptionActivity extends AppCompatActivity {
         dialog = new ResponseDialog();
 
         userId = getIntent().getStringExtra("userId");
+        userPrescription.clear();
+        userPrescription = getIntent().getParcelableArrayListExtra("prescription");
+        if (userPrescription != null && userPrescription.size() > 0) {
+            for (int i = 0; i < userPrescription.size(); i++) {
+                addView();
+
+                View medicineView = prescriptionBinding.medicineList.getChildAt(i);
+
+                medicineType = medicineView.findViewById(R.id.medicine_type);
+                medicineName = medicineView.findViewById(R.id.medicine_name);
+                medicineDesc = medicineView.findViewById(R.id.medicine_description);
+
+                medicineName.setText(userPrescription.get(i).getMedName());
+                medicineType.setText(userPrescription.get(i).getMedType());
+                medicineDesc.setText(userPrescription.get(i).getMedDesc());
+            }
+        };
 
         medicineTypeList.add("Tab");
         medicineTypeList.add("Syrup");
@@ -73,8 +94,6 @@ public class PrescriptionActivity extends AppCompatActivity {
         View medicineView = getLayoutInflater().inflate(R.layout.add_medicine, null, false);
 
         AutoCompleteTextView medicineType = medicineView.findViewById(R.id.medicine_type);
-        TextInputEditText medicineName = medicineView.findViewById(R.id.medicine_name);
-        TextInputEditText medicineDesc = medicineView.findViewById(R.id.medicine_description);
         ImageView deleteMedicine = medicineView.findViewById(R.id.delete_medicine);
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, medicineTypeList);
@@ -93,33 +112,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         finish();
     }
 
-    public void submitPrescription(View view) {
-        if (checkAllFiendsEntered()) {
-
-            Call<verify_response_model> call = ApiControllers.getInstance()
-                    .getApi()
-                    .addPrescription("Bearer " + preferenceManager.getString(Constants.token), userId, prescriptionItems);
-
-            call.enqueue(new Callback<verify_response_model>() {
-                @Override
-                public void onResponse(Call<verify_response_model> call, Response<verify_response_model> response) {
-                    if (response.body() != null && response.body().getMessage() != null)
-                        dialog.showDialog(PrescriptionActivity.this, getResources().getDrawable(R.drawable.ic_success), "Successful", getResources().getColor(R.color.red), response.body().getMessage());
-                    else
-                        dialog.showDialog(PrescriptionActivity.this, getResources().getDrawable(R.drawable.ic_found), "Failed", getResources().getColor(R.color.red), response.body().toString());
-                }
-
-                @Override
-                public void onFailure(Call<verify_response_model> call, Throwable t) {
-                    progressDialog.dismissDialog();
-                    Log.d(TAG, "onFailure: 219 " + t.getMessage());
-                    dialog.showDialog(PrescriptionActivity.this, getResources().getDrawable(R.drawable.ic_error), "Error", getResources().getColor(R.color.red), t.getMessage());
-                }
-            });
-        }
-    }
-
-    private boolean checkAllFiendsEntered() {
+    private boolean checkAllFieldsEntered() {
         prescriptionItems.clear();
         boolean result = true;
 
@@ -127,9 +120,9 @@ public class PrescriptionActivity extends AppCompatActivity {
 
             View medicineView = prescriptionBinding.medicineList.getChildAt(i);
 
-            AutoCompleteTextView medicineType = medicineView.findViewById(R.id.medicine_type);
-            TextInputEditText medicineName = medicineView.findViewById(R.id.medicine_name);
-            TextInputEditText medicineDesc = medicineView.findViewById(R.id.medicine_description);
+            medicineType = medicineView.findViewById(R.id.medicine_type);
+            medicineName = medicineView.findViewById(R.id.medicine_name);
+            medicineDesc = medicineView.findViewById(R.id.medicine_description);
 
             prescription_response_model prescriptionItem = new prescription_response_model();
 
@@ -166,5 +159,34 @@ public class PrescriptionActivity extends AppCompatActivity {
         }
 
         return result;
+    }
+
+    public void uploadPrescription(View view) {
+        if (checkAllFieldsEntered()) {
+            Log.d(TAG, "uploadPrescription: 169 "+prescriptionItems.size());
+            progressDialog.showDialog();
+
+            Call<verify_response_model> call = ApiControllers.getInstance()
+                    .getApi()
+                    .addPrescription("Bearer " + preferenceManager.getString(Constants.token), userId, prescriptionItems);
+
+            call.enqueue(new Callback<verify_response_model>() {
+                @Override
+                public void onResponse(Call<verify_response_model> call, Response<verify_response_model> response) {
+                    progressDialog.dismissDialog();
+                    if (response.body() != null && response.body().getMessage() != null)
+                        dialog.showDialog(PrescriptionActivity.this, getResources().getDrawable(R.drawable.ic_success), "Successful", getResources().getColor(R.color.green), response.body().getMessage());
+                    else
+                        dialog.showDialog(PrescriptionActivity.this, getResources().getDrawable(R.drawable.ic_found), "Failed", getResources().getColor(R.color.red), response.body().toString());
+                }
+
+                @Override
+                public void onFailure(Call<verify_response_model> call, Throwable t) {
+                    progressDialog.dismissDialog();
+                    Log.d(TAG, "onFailure: 219 " + t.getMessage());
+                    dialog.showDialog(PrescriptionActivity.this, getResources().getDrawable(R.drawable.ic_error), "Error", getResources().getColor(R.color.red), t.getMessage());
+                }
+            });
+        }
     }
 }

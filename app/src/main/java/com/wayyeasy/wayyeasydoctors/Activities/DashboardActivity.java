@@ -30,15 +30,12 @@ import com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers;
 import com.wayyeasy.wayyeasydoctors.ComponentFiles.Constants.Constants;
 import com.wayyeasy.wayyeasydoctors.CustomDialogs.ProgressDialog;
 import com.wayyeasy.wayyeasydoctors.CustomDialogs.ResponseDialog;
-import com.wayyeasy.wayyeasydoctors.Listeners.UsersListener;
 import com.wayyeasy.wayyeasydoctors.Models.RealtimeCalling.user_booked_response_model;
 import com.wayyeasy.wayyeasydoctors.Models.verify_response_model_sub;
 import com.wayyeasy.wayyeasydoctors.R;
 import com.wayyeasy.wayyeasydoctors.Utils.NetworkChangeListener;
 import com.wayyeasy.wayyeasydoctors.Utils.SharedPreferenceManager;
 import com.wayyeasy.wayyeasydoctors.databinding.ActivityDashboardBinding;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,7 +49,7 @@ public class DashboardActivity extends AppCompatActivity {
     ActionBarDrawerToggle toggle;
     private TextView doctorNameHeader, doctorSpecialityHeader, doctorRatingsHeader;
     private ImageView doctorImageHeader;
-    private boolean isOnline = false;
+    private boolean isOnline = true;
     SharedPreferenceManager preferenceManager;
     ProgressDialog progressDialog;
     ResponseDialog dialog;
@@ -69,7 +66,6 @@ public class DashboardActivity extends AppCompatActivity {
         preferenceManager = new SharedPreferenceManager(getApplicationContext());
         progressDialog = new ProgressDialog(DashboardActivity.this);
         dialog = new ResponseDialog();
-        Log.d(TAG, "onCreate: 61 " + preferenceManager.getString(Constants.KEY_FCM_TOKEN));
 
         if (preferenceManager.getBoolean(Constants.KEY_IS_DOCTOR_SIGNED_IN)) {
             if (preferenceManager.getString(Constants.status).equals("pending")) {
@@ -108,6 +104,10 @@ public class DashboardActivity extends AppCompatActivity {
             }
         }
 
+        if (preferenceManager.getBoolean(Constants.isActive) != null && preferenceManager.getBoolean(Constants.isActive).toString().length() > 0) {
+            isOnline = preferenceManager.getBoolean(Constants.isActive);
+        }
+        
         //Menu starts
         setSupportActionBar(dashboard.toolbar);
 
@@ -183,9 +183,11 @@ public class DashboardActivity extends AppCompatActivity {
         if (preferenceManager.getBoolean(Constants.KEY_IS_DOCTOR_SIGNED_IN)) {
             if (preferenceManager.getString(Constants.status).equals("active")) {
                 if (isOnline) {
+                    preferenceManager.putBoolean(Constants.isActive, true);
                     item.setIcon(R.drawable.offline);
                     dashboard.toolbar.setTitle("You are online now");
                 } else {
+                    preferenceManager.putBoolean(Constants.isActive, false);
                     item.setIcon(R.drawable.online);
                     dashboard.toolbar.setTitle("Offline");
                 }
@@ -207,6 +209,7 @@ public class DashboardActivity extends AppCompatActivity {
         call.enqueue(new Callback<verify_response_model_sub>() {
             @Override
             public void onResponse(Call<verify_response_model_sub> call, Response<verify_response_model_sub> response) {
+                progressDialog.dismissDialog();
                 if (response.code() == 200) {
                     verify_response_model_sub data = response.body();
                     preferenceManager.putBoolean(Constants.KEY_IS_DOCTOR_SIGNED_IN, true);
@@ -224,7 +227,6 @@ public class DashboardActivity extends AppCompatActivity {
                     preferenceManager.putString(Constants.status, data.getStatus());
                     preferenceManager.putString(Constants.KEY_FCM_TOKEN, data.getFcmToken());
 
-                    progressDialog.dismissDialog();
                     updateDoctorsData();
                 }
             }
@@ -277,24 +279,26 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void fetchUsersPaidForConsult() {
         progressDialog.showDialog();
-        Call<List<user_booked_response_model>> call = ApiControllers.getInstance()
+        Call<user_booked_response_model> call = ApiControllers.getInstance()
                 .getApi()
-                .getPhysicianPaidUsers("Bearer " + preferenceManager.getString(Constants.token), preferenceManager.getString(Constants.mongoId));
+                .getPhysicianPaidUsers("Bearer " + preferenceManager.getString(Constants.token));
 
-        call.enqueue(new Callback<List<user_booked_response_model>>() {
+        call.enqueue(new Callback<user_booked_response_model>() {
             @Override
-            public void onResponse(Call<List<user_booked_response_model>> call, Response<List<user_booked_response_model>> response) {
+            public void onResponse(Call<user_booked_response_model> call, Response<user_booked_response_model> response) {
                 progressDialog.dismissDialog();
-                if (response != null && response.isSuccessful() && response.body() != null && response.body().size() > 0) {
+                user_booked_response_model data = response.body();
+                if (data.getResult() != null && data.getResult().equals("success")) {
+                    dashboard.recyclerView.setVisibility(View.VISIBLE);
                     dashboard.recyclerView.setLayoutManager(new LinearLayoutManager(DashboardActivity.this));
-                    List<user_booked_response_model> usersList = response.body();
-                    paidUsersList = new PaidUsersList(usersList, preferenceManager.getString(Constants.token));
+                    paidUsersList = new PaidUsersList(data.getData(), preferenceManager.getString(Constants.token));
                     dashboard.recyclerView.setAdapter(paidUsersList);
-                }
+                } else
+                    dashboard.emptyListSection.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onFailure(Call<List<user_booked_response_model>> call, Throwable t) {
+            public void onFailure(Call<user_booked_response_model> call, Throwable t) {
                 progressDialog.dismissDialog();
                 Log.d(TAG, "onFailure: 322 " + t.getMessage());
                 dialog.showDialog(DashboardActivity.this, getResources().getDrawable(R.drawable.ic_error), "Error", getResources().getColor(R.color.red), t.getMessage());
@@ -302,7 +306,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
-//    --------- Social Media ---------------------------------------------------
+    //    --------- Social Media ---------------------------------------------------
     public void openFacebook(View view) {
         try {
             Uri uri = Uri.parse("https://www.facebook.com/WayyEasy");

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.wayyeasy.wayyeasydoctors.Activities.DashboardActivity;
+import com.wayyeasy.wayyeasydoctors.Activities.PrivacyActivity;
 import com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers;
 import com.wayyeasy.wayyeasydoctors.ComponentFiles.Constants.Constants;
 import com.wayyeasy.wayyeasydoctors.CustomDialogs.ProgressDialog;
@@ -53,7 +54,7 @@ public class LoginFragment extends Fragment {
         preferenceManager = new SharedPreferenceManager(getActivity());
 
         loginBinding.loginBtn.setOnClickListener(view -> {
-            if (loginBinding.emailMobile.getText().toString().length() > 9) {
+            if (loginBinding.emailMobile.getText().toString().length() >= 9) {
                 if (loginBinding.password.getText().toString().equals("") && loginBinding.password.getText().length() < 8) {
                     loginBinding.errorMsg.setVisibility(View.VISIBLE);
                     loginBinding.errorMsg.setText("Password should be of 8 characters.");
@@ -132,6 +133,7 @@ public class LoginFragment extends Fragment {
                         preferenceManager.putString(Constants.mobile, data.getResult().getMobile());
                         preferenceManager.putString(Constants.qualification, data.getResult().getQualification());
                         preferenceManager.putString(Constants.specialityType, data.getResult().getSpecialityType());
+                        preferenceManager.putString(Constants.address, data.getResult().getAddress());
                         preferenceManager.putString(Constants.description, data.getResult().getDescription());
                         preferenceManager.putString(Constants.price, data.getResult().getPrice());
                         preferenceManager.putString(Constants.image, data.getResult().getImage());
@@ -194,6 +196,7 @@ public class LoginFragment extends Fragment {
                     preferenceManager.putString(Constants.mobile, data.getResult().getMobile());
                     preferenceManager.putString(Constants.qualification, data.getResult().getQualification());
                     preferenceManager.putString(Constants.specialityType, data.getResult().getSpecialityType());
+                    preferenceManager.putString(Constants.address, data.getResult().getAddress());
                     preferenceManager.putString(Constants.description, data.getResult().getDescription());
                     preferenceManager.putString(Constants.price, data.getResult().getPrice());
                     preferenceManager.putString(Constants.image, data.getResult().getImage());

@@ -10,8 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Please enter basic details"
+        android:text="Please enter basic details to create account."
         android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
         android:id="@+id/register_heading"
         android:textSize="16sp"
         android:textColor="@color/white"/>
@@ -73,6 +74,30 @@
         android:layout_marginTop="10dp"
         android:textColor="@color/theme_color"
         android:id="@+id/c_password" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/checkbox_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I agree to the "
+            android:buttonTint="@color/theme_color"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/open_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/theme_color"
+            android:text="Terms and Conditions" />
+    </LinearLayout>
+
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/register_btn"

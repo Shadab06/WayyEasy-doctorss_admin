@@ -1,5 +1,6 @@
 package com.wayyeasy.wayyeasydoctors.Activities;
 
+import static com.wayyeasy.wayyeasydoctors.Activities.DashboardActivity.TAG;
 import static com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers.url;
 
 import android.Manifest;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TimePicker;
@@ -40,7 +42,10 @@ import com.wayyeasy.wayyeasydoctors.databinding.ActivityProfileBinding;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -192,53 +197,63 @@ public class ProfileActivity extends AppCompatActivity {
     private void generateFCMToken() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
-                progressDialog.showDialog();
                 uploadData(profileImage, docImage, profileBinding.specialityInput.getText().toString(), profileBinding.qualificationInput.getText().toString(), profileBinding.priceInput.getText().toString(), profileBinding.shiftStartInput.getText().toString(), profileBinding.shiftEndInput.getText().toString(), profileBinding.addressInput.getText().toString(), profileBinding.descriptionInput.getText().toString(), task.getResult());
             }
         });
     }
 
     private void uploadData(String profileImage, String docImage, String speciality, String qualification, String price, String shiftStart, String shiftEnd, String address, String desc, String token) {
-        if (speciality != null && qualification != null && price != null && shiftStart != null && shiftEnd != null && address != null && desc != null) {
-            HashMap<String, Object> userMap = new HashMap<>();
-            userMap.put(Constants.image, profileImage);
-            userMap.put(Constants.proofDocs, docImage);
-            userMap.put(Constants.specialityType, speciality);
-            userMap.put(Constants.qualification, qualification);
-            userMap.put(Constants.price, price);
-            userMap.put(Constants.shiftStart, shiftStart);
-            userMap.put(Constants.shiftEnd, shiftEnd);
-            userMap.put(Constants.address, address);
-            userMap.put(Constants.description, desc);
-            userMap.put(Constants.status, "pending");
-            userMap.put(Constants.KEY_FIREBASE_USER_ID, preferenceManager.getString(Constants.KEY_FIREBASE_USER_ID));
-            userMap.put(Constants.KEY_FCM_TOKEN, token);
+        if ((speciality != null && speciality.length() > 0) && (qualification != null && qualification.length() > 0) &&
+                (price != null && price.length() > 0) && (shiftStart != null && shiftStart.length() > 0) &&
+                (shiftEnd != null && shiftEnd.length() > 0) && (address != null && address.length() > 0) &&
+                (desc != null && desc.length() > 0)) {
+            if (checkValidTime(shiftStart, shiftEnd)) {
+                progressDialog.showDialog();
 
-            FirebaseFirestore database = FirebaseFirestore.getInstance();
-            database.collection(Constants.FIREBASE_DOCTORS_DB)
-                    .document(preferenceManager.getString(Constants.KEY_FIREBASE_USER_ID))
-                    .update(userMap)
-                    .addOnCompleteListener(task -> {
-                        profileBinding.errorMsg.setVisibility(View.GONE);
-                        progressDialog.dismissDialog();
-                        preferenceManager.putBoolean(Constants.KEY_IS_DOCTOR_SIGNED_IN, true);
-                        preferenceManager.putString(Constants.status, "pending");
-                        preferenceManager.putString(Constants.image, profileImage);
-                        preferenceManager.putString(Constants.proofDocs, docImage);
-                        preferenceManager.putString(Constants.specialityType, speciality);
-                        preferenceManager.putString(Constants.qualification, qualification);
-                        preferenceManager.putString(Constants.price, price);
-                        preferenceManager.putString(Constants.address, address);
-                        preferenceManager.putString(Constants.description, desc);
+                HashMap<String, Object> userMap = new HashMap<>();
+                userMap.put(Constants.image, profileImage);
+                userMap.put(Constants.proofDocs, docImage);
+                userMap.put(Constants.specialityType, speciality);
+                userMap.put(Constants.qualification, qualification);
+                userMap.put(Constants.price, price);
+                userMap.put(Constants.shiftStart, shiftStart);
+                userMap.put(Constants.shiftEnd, shiftEnd);
+                userMap.put(Constants.address, address);
+                userMap.put(Constants.description, desc);
+                userMap.put(Constants.status, "pending");
+                userMap.put(Constants.KEY_FIREBASE_USER_ID, preferenceManager.getString(Constants.KEY_FIREBASE_USER_ID));
+                userMap.put(Constants.KEY_FCM_TOKEN, token);
 
-                        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    })
-                    .addOnFailureListener(e -> {
-                        progressDialog.dismissDialog();
-                        dialog.showDialog(ProfileActivity.this, getResources().getDrawable(R.drawable.ic_error), "Error", getResources().getColor(R.color.red), e.getMessage().toString());
-                    });
+                FirebaseFirestore database = FirebaseFirestore.getInstance();
+                database.collection(Constants.FIREBASE_DOCTORS_DB)
+                        .document(preferenceManager.getString(Constants.KEY_FIREBASE_USER_ID))
+                        .update(userMap)
+                        .addOnCompleteListener(task -> {
+                            profileBinding.errorMsg.setVisibility(View.GONE);
+                            progressDialog.dismissDialog();
+                            preferenceManager.putBoolean(Constants.KEY_IS_DOCTOR_SIGNED_IN, true);
+                            preferenceManager.putString(Constants.status, "pending");
+                            preferenceManager.putString(Constants.image, profileImage);
+                            preferenceManager.putString(Constants.proofDocs, docImage);
+                            preferenceManager.putString(Constants.specialityType, speciality);
+                            preferenceManager.putString(Constants.qualification, qualification);
+                            preferenceManager.putString(Constants.price, price);
+                            preferenceManager.putString(Constants.address, address);
+                            preferenceManager.putString(Constants.description, desc);
+
+                            Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        })
+                        .addOnFailureListener(e -> {
+                            progressDialog.dismissDialog();
+                            dialog.showDialog(ProfileActivity.this, getResources().getDrawable(R.drawable.ic_error), "Error", getResources().getColor(R.color.red), e.getMessage().toString());
+                        });
+                
+            } else {
+                profileBinding.errorMsg.setVisibility(View.VISIBLE);
+                profileBinding.errorMsg.setText("Selected time is not valid.");
+            }
         } else {
             profileBinding.errorMsg.setVisibility(View.VISIBLE);
             profileBinding.errorMsg.setText("All fields are mandatory.");
@@ -287,7 +302,7 @@ public class ProfileActivity extends AppCompatActivity {
                 profileBinding.proofImg.setText("Document approved");
                 profileBinding.proofImg.setTextColor(getResources().getColor(R.color.theme_color));
 
-                String imgUrl = url + preferenceManager.getString(Constants.image);
+                String imgUrl = url + "doctors/" + preferenceManager.getString(Constants.image);
 
                 GlideUrl glideUrl = new GlideUrl(imgUrl,
                         new LazyHeaders.Builder()
@@ -309,6 +324,8 @@ public class ProfileActivity extends AppCompatActivity {
 
                 Calendar calendar = Calendar.getInstance();
 
+                calendar.set(0, 0, 0, hours, minutes);
+
                 profileBinding.shiftStartInput.setText(DateFormat.format("hh:mm aa", calendar));
             }
         }, 12, 0, false);
@@ -327,12 +344,32 @@ public class ProfileActivity extends AppCompatActivity {
 
                 Calendar calendar = Calendar.getInstance();
 
+                calendar.set(0, 0, 0, hours, minutes);
+
                 profileBinding.shiftEndInput.setText(DateFormat.format("hh:mm aa", calendar));
             }
         }, 12, 0, false);
 
         timePickerDialog.updateTime(hours, minutes);
         timePickerDialog.show();
+    }
+
+    public boolean checkValidTime(String shiftStart, String shiftEnd) {
+
+        boolean validTime = false;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
+            Date startTime = sdf.parse(shiftStart);
+            Date endTime = sdf.parse(shiftEnd);
+
+            if (startTime.before(endTime))
+                validTime = true;
+            else
+                validTime = false;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return validTime;
     }
 
     public void clearActivity(View view) {

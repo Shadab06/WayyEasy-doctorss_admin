@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/availability"
-        android:icon="@drawable/online"
+        android:icon="@drawable/offline"
         android:title="GO"
         app:showAsAction="always" />
 </menu>

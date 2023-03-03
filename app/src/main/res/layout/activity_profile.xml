@@ -189,6 +189,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
                 android:paddingLeft="10dp"
                 android:text="Timing"
                 android:textColor="@color/black" />
@@ -198,43 +199,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                <TextView
+                    android:id="@+id/shift_start_input"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    app:helperTextTextColor="@color/teal_700"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:hint="From"
-                    android:layout_marginRight="10dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:textColor="@color/black"
+                    android:padding="15dp"
+                    android:onClick="selectStartTime"
+                    android:background="@drawable/hollow_square_background"
+                    android:layout_marginRight="10dp" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/shift_start_input"
-                        android:layout_width="match_parent"
-                        android:onClick="selectStartTime"
-                        android:layout_height="42dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                <TextView
+                    android:id="@+id/shift_end_input"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
                     android:layout_height="wrap_content"
-                    app:helperTextTextColor="@color/teal_700"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:hint="To"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/shift_end_input"
-                        android:layout_width="match_parent"
-                        android:onClick="selectEndTime"
-                        android:layout_height="wrap_content" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:textColor="@color/black"
+                    android:padding="15dp"
+                    android:onClick="selectEndTime"
+                    android:background="@drawable/hollow_square_background"
+                    android:layout_marginLeft="10dp" />
             </LinearLayout>
 
             <TextView

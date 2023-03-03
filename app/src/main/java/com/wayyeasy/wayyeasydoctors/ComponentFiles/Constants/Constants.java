@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public class Constants {
     public static final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    public static final String isActive = "isActive";
 
 
     //        ------------------------------------------------------------------------
@@ -28,9 +29,6 @@ public class Constants {
     public static final String ratings = "ratings";
     public static final String token = "token";
     public static final String role = "role";
-
-    // prescription Constants
-    public static final String prescriptionData = "prescriptionList";
 
 
     //        ------------------------------------------------------------------------

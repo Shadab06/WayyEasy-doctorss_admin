@@ -15,6 +15,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.wayyeasy.wayyeasydoctors.ComponentFiles.CallingApiHandlers.CallingApiControllers;
 import com.wayyeasy.wayyeasydoctors.ComponentFiles.CallingApiHandlers.CallingApiSet;
 import com.wayyeasy.wayyeasydoctors.ComponentFiles.Constants.Constants;
+import com.wayyeasy.wayyeasydoctors.Models.RealtimeCalling.single_user_booked;
 import com.wayyeasy.wayyeasydoctors.Models.RealtimeCalling.user_booked_response_model;
 import com.wayyeasy.wayyeasydoctors.R;
 import com.wayyeasy.wayyeasydoctors.Utils.SharedPreferenceManager;
@@ -33,7 +34,7 @@ import retrofit2.Response;
 public class OutgoingInvitation extends AppCompatActivity {
 
     ActivityOutgoingInvitationBinding outgoingInvitationBinding;
-    user_booked_response_model bookedUser;
+    single_user_booked bookedUser;
     SharedPreferenceManager preferenceManager;
     private String inviterToken = null;
     private String meetingRoom = null;

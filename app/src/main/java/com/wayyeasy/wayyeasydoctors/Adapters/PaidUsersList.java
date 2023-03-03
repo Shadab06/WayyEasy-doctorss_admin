@@ -19,6 +19,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.wayyeasy.wayyeasydoctors.Activities.SingleConsultationActivity;
 import com.wayyeasy.wayyeasydoctors.Listeners.UsersListener;
+import com.wayyeasy.wayyeasydoctors.Models.RealtimeCalling.single_user_booked;
 import com.wayyeasy.wayyeasydoctors.Models.RealtimeCalling.user_booked_response_model;
 import com.wayyeasy.wayyeasydoctors.R;
 
@@ -27,10 +28,10 @@ import java.util.List;
 public class PaidUsersList extends RecyclerView.Adapter<PaidUsersList.holder> {
 
     private static final String TAG = "Close Data";
-    List<user_booked_response_model> data;
+    List<single_user_booked> data;
     private String token;
 
-    public PaidUsersList(List<user_booked_response_model> data, String token) {
+    public PaidUsersList(List<single_user_booked> data, String token) {
         this.data = data;
         this.token = token;
     }

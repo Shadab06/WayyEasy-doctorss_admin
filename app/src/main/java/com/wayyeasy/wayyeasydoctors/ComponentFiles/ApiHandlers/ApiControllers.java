@@ -12,13 +12,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiControllers {
 
 //    public static final String url = "https://api.wayyeasy.in/api/";
-        public static final String url = "http://192.168.0.101:2001/api/";
+        public static final String url = "http://192.168.0.104:2001/api/";
     public static ApiControllers clientObject;
     public static Retrofit retrofit;
 
     OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(100, TimeUnit.SECONDS)
-            .readTimeout(100, TimeUnit.SECONDS).build();
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS).build();
 
     Gson gson = new GsonBuilder()
             .setLenient()

@@ -28,15 +28,6 @@ public interface ApiSet {
     Call<verify_response_model_sub> getPhysicianById(@Header("Authorization") String token,
                                                      @Path("physicianId") String physicianId);
 
-    @GET("physicianBookedByUsers/getUsersUnderPhysician/{physicianId}")
-    Call<List<user_booked_response_model>> getPhysicianPaidUsers(@Header("Authorization") String token,
-                                                                 @Path("physicianId") String physicianId);
-
-    @PATCH("physicianBookedByUsers/addUserPrescriptions/{userId}")
-    Call<verify_response_model> addPrescription(@Header("Authorization") String token,
-                                                @Path("userId") String userId,
-                                                @Body List<prescription_response_model> data);
-
     @PATCH("physicians/updateToken")
     Call<Void> updateToken(@Header("Authorization") String token,
                            @Body HashMap<String, String> fcmToken);
@@ -44,4 +35,16 @@ public interface ApiSet {
     @GET("user/fetchUserById/{userId}")
     Call<single_user_response_model> fetchUser(@Header("Authorization") String token,
                                                @Path("userId") String userId);
+
+    @GET("physicianBookedByUsers/getUsersUnderPhysician")
+    Call<user_booked_response_model> getPhysicianPaidUsers(@Header("Authorization") String token);
+
+    @PATCH("physicianBookedByUsers/addUserPrescriptions/{userId}")
+    Call<verify_response_model> addPrescription(@Header("Authorization") String token,
+                                                @Path("userId") String userId,
+                                                @Body List<prescription_response_model> data);
+
+    @PATCH("physicianBookedByUsers/finishConsultancyByDoctor/{userId}")
+    Call<verify_response_model> finishConsultation(@Header("Authorization") String token,
+                                                   @Path("userId") String userId);
 }

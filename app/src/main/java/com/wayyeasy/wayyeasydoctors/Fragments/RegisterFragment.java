@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.wayyeasy.wayyeasydoctors.Activities.DashboardActivity;
+import com.wayyeasy.wayyeasydoctors.Activities.PrivacyActivity;
 import com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers;
 import com.wayyeasy.wayyeasydoctors.ComponentFiles.Constants.Constants;
 import com.wayyeasy.wayyeasydoctors.CustomDialogs.ProgressDialog;
@@ -50,6 +51,12 @@ public class RegisterFragment extends Fragment {
                 registerBinding.mobile.getText().toString().trim(), registerBinding.password.getText().toString().trim(),
                 registerBinding.cPassword.getText().toString().trim()));
 
+        registerBinding.openPrivacy.setOnClickListener(view -> {
+            Intent toPolicy = new Intent(getActivity(), PrivacyActivity.class);
+            toPolicy.putExtra("policiesLink", "file:///android_asset/privacy_policy.html");
+            startActivity(toPolicy);
+        });
+
         registerBinding.cPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -85,11 +92,27 @@ public class RegisterFragment extends Fragment {
             registerBinding.errorMsg.setText("All fields are mandatory");
             return;
         }
-
-        if (!password.equals(cPassword)) return;
-
         if (email.matches(Constants.emailPattern)) {
             if (mobile != null && mobile.length() > 8) {
+
+                if (password.length() < 8) {
+                    registerBinding.errorMsg.setVisibility(View.VISIBLE);
+                    registerBinding.errorMsg.setText("Password should have at least 8 characters");
+                    return;
+                }
+
+                if (!password.equals(cPassword)) {
+                    registerBinding.errorMsg.setVisibility(View.VISIBLE);
+                    registerBinding.errorMsg.setText("Password didn't matched!");
+                    return;
+                }
+
+                if (!registerBinding.checkboxPrivacy.isChecked()) {
+                    registerBinding.errorMsg.setVisibility(View.VISIBLE);
+                    registerBinding.errorMsg.setText("Please accept out terms and conditions");
+                    return;
+                }
+
                 registerBinding.errorMsg.setVisibility(View.GONE);
                 progressDialog.showDialog();
                 toRegisterProcess(name, email, mobile, password);

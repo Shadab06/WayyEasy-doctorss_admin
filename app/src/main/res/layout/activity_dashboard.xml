@@ -182,7 +182,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="30dp"
                 android:gravity="center_horizontal"
-                android:text="VERSION  1.03.2.2"
+                android:text="VERSION  1.2.03.01"
                 android:textColor="@color/theme_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

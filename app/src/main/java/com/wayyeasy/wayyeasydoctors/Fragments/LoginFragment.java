@@ -55,14 +55,14 @@ public class LoginFragment extends Fragment {
 
         loginBinding.loginBtn.setOnClickListener(view -> {
             if (loginBinding.emailMobile.getText().toString().length() >= 9) {
-                if (loginBinding.password.getText().toString().equals("") && loginBinding.password.getText().length() < 8) {
-                    loginBinding.errorMsg.setVisibility(View.VISIBLE);
-                    loginBinding.errorMsg.setText("Password should be of 8 characters.");
-                } else {
+//                if (loginBinding.password.getText().toString().equals("") || loginBinding.password.getText().length() < 8) {
+//                    loginBinding.errorMsg.setVisibility(View.VISIBLE);
+//                    loginBinding.errorMsg.setText("Password should be of 8 characters.");
+//                } else {
                     loginBinding.errorMsg.setVisibility(View.GONE);
                     progressDialog.showDialog();
                     loginUser(loginBinding.emailMobile.getText().toString().trim(), loginBinding.password.getText().toString().trim());
-                }
+//                }
             } else {
                 loginBinding.errorMsg.setVisibility(View.VISIBLE);
                 loginBinding.errorMsg.setText("Please enter proper email or mobile !!!");
@@ -92,7 +92,6 @@ public class LoginFragment extends Fragment {
             @Override
             public void onResponse(Call<verify_response_model> call, Response<verify_response_model> response) {
                 verify_response_model data = response.body();
-                Log.d(TAG, "onResponse: "+response.body());
                 if (data.getMessage().equals("Login Successful")) {
                     AuthenticateToFirebase(data);
                 } else if (data.getMessage().equals("User not found")) {
@@ -136,6 +135,8 @@ public class LoginFragment extends Fragment {
                         preferenceManager.putString(Constants.address, data.getResult().getAddress());
                         preferenceManager.putString(Constants.description, data.getResult().getDescription());
                         preferenceManager.putString(Constants.price, data.getResult().getPrice());
+                        preferenceManager.putString(Constants.shiftStart, data.getResult().getShiftStart());
+                        preferenceManager.putString(Constants.shiftEnd, data.getResult().getShiftEnd());
                         preferenceManager.putString(Constants.image, data.getResult().getImage());
                         preferenceManager.putString(Constants.status, data.getResult().getStatus());
                         preferenceManager.putString(Constants.KEY_FCM_TOKEN, preferenceManager.getString(Constants.KEY_FCM_TOKEN));
@@ -199,6 +200,8 @@ public class LoginFragment extends Fragment {
                     preferenceManager.putString(Constants.address, data.getResult().getAddress());
                     preferenceManager.putString(Constants.description, data.getResult().getDescription());
                     preferenceManager.putString(Constants.price, data.getResult().getPrice());
+                    preferenceManager.putString(Constants.shiftStart, data.getResult().getShiftStart());
+                    preferenceManager.putString(Constants.shiftEnd, data.getResult().getShiftEnd());
                     preferenceManager.putString(Constants.image, data.getResult().getImage());
                     preferenceManager.putString(Constants.status, data.getResult().getStatus());
                     preferenceManager.putString(Constants.KEY_FCM_TOKEN, data.getResult().getFcmToken());

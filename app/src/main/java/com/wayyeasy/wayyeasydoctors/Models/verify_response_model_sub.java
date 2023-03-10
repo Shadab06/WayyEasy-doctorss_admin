@@ -1,12 +1,12 @@
 package com.wayyeasy.wayyeasydoctors.Models;
 
 public class verify_response_model_sub {
-    private String name, image, _id, role, mobile, email, isFull, status, badge, address, description, price, proofDocs, qualification, specialityType, fcmToken;
+    private String name, image, _id, role, mobile, email, isFull, status, badge, address, description, price, shiftStart, shiftEnd, proofDocs, qualification, specialityType, fcmToken;
 
     public verify_response_model_sub() {
     }
 
-    public verify_response_model_sub(String name, String image, String _id, String role, String mobile, String email, String isFull, String status, String badge, String address, String description, String price, String proofDocs, String qualification, String specialityType, String fcmToken) {
+    public verify_response_model_sub(String name, String image, String _id, String role, String mobile, String email, String isFull, String status, String badge, String address, String description, String price, String shiftStart, String shiftEnd, String proofDocs, String qualification, String specialityType, String fcmToken) {
         this.name = name;
         this.image = image;
         this._id = _id;
@@ -19,6 +19,8 @@ public class verify_response_model_sub {
         this.address = address;
         this.description = description;
         this.price = price;
+        this.shiftStart = shiftStart;
+        this.shiftEnd = shiftEnd;
         this.proofDocs = proofDocs;
         this.qualification = qualification;
         this.specialityType = specialityType;
@@ -71,6 +73,14 @@ public class verify_response_model_sub {
 
     public String getPrice() {
         return price;
+    }
+
+    public String getShiftStart() {
+        return shiftStart;
+    }
+
+    public String getShiftEnd() {
+        return shiftEnd;
     }
 
     public String getProofDocs() {

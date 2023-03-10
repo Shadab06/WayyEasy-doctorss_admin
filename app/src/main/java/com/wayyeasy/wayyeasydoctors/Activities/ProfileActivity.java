@@ -1,8 +1,6 @@
 package com.wayyeasy.wayyeasydoctors.Activities;
 
-import static com.wayyeasy.wayyeasydoctors.Activities.DashboardActivity.TAG;
-import static com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers.url;
-
+import static com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers.BASE_URL;
 import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -12,15 +10,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
@@ -39,7 +34,6 @@ import com.wayyeasy.wayyeasydoctors.CustomDialogs.ResponseDialog;
 import com.wayyeasy.wayyeasydoctors.R;
 import com.wayyeasy.wayyeasydoctors.Utils.SharedPreferenceManager;
 import com.wayyeasy.wayyeasydoctors.databinding.ActivityProfileBinding;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -238,6 +232,8 @@ public class ProfileActivity extends AppCompatActivity {
                             preferenceManager.putString(Constants.specialityType, speciality);
                             preferenceManager.putString(Constants.qualification, qualification);
                             preferenceManager.putString(Constants.price, price);
+                            preferenceManager.putString(Constants.shiftStart, shiftStart);
+                            preferenceManager.putString(Constants.shiftEnd, shiftEnd);
                             preferenceManager.putString(Constants.address, address);
                             preferenceManager.putString(Constants.description, desc);
 
@@ -272,6 +268,8 @@ public class ProfileActivity extends AppCompatActivity {
                 profileBinding.specialityInput.setText(preferenceManager.getString(Constants.specialityType));
                 profileBinding.qualificationInput.setText(preferenceManager.getString(Constants.qualification));
                 profileBinding.priceInput.setText(preferenceManager.getString(Constants.price));
+                profileBinding.shiftStartInput.setText(preferenceManager.getString(Constants.shiftStart));
+                profileBinding.shiftEndInput.setText(preferenceManager.getString(Constants.shiftEnd));
                 profileBinding.addressInput.setText(preferenceManager.getString(Constants.address));
                 profileBinding.descriptionInput.setText(preferenceManager.getString(Constants.description));
                 profileBinding.updateProfileBtn.setVisibility(View.GONE);
@@ -297,12 +295,14 @@ public class ProfileActivity extends AppCompatActivity {
                 profileBinding.specialityInput.setText(preferenceManager.getString(Constants.specialityType));
                 profileBinding.qualificationInput.setText(preferenceManager.getString(Constants.qualification));
                 profileBinding.priceInput.setText(preferenceManager.getString(Constants.price));
+                profileBinding.shiftStartInput.setText(preferenceManager.getString(Constants.shiftStart));
+                profileBinding.shiftEndInput.setText(preferenceManager.getString(Constants.shiftEnd));
                 profileBinding.addressInput.setText(preferenceManager.getString(Constants.address));
                 profileBinding.descriptionInput.setText(preferenceManager.getString(Constants.description));
                 profileBinding.proofImg.setText("Document approved");
                 profileBinding.proofImg.setTextColor(getResources().getColor(R.color.theme_color));
 
-                String imgUrl = url + "doctors/" + preferenceManager.getString(Constants.image);
+                String imgUrl = BASE_URL + "doctors/" + preferenceManager.getString(Constants.image);
 
                 GlideUrl glideUrl = new GlideUrl(imgUrl,
                         new LazyHeaders.Builder()

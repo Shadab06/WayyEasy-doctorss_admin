@@ -1,28 +1,21 @@
 package com.wayyeasy.wayyeasydoctors.Adapters;
 
-import static com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers.url;
-
+import static com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers.BASE_URL;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.wayyeasy.wayyeasydoctors.Activities.SingleConsultationActivity;
-import com.wayyeasy.wayyeasydoctors.Listeners.UsersListener;
 import com.wayyeasy.wayyeasydoctors.Models.RealtimeCalling.single_user_booked;
-import com.wayyeasy.wayyeasydoctors.Models.RealtimeCalling.user_booked_response_model;
 import com.wayyeasy.wayyeasydoctors.R;
-
 import java.util.List;
 
 public class PaidUsersList extends RecyclerView.Adapter<PaidUsersList.holder> {
@@ -55,7 +48,7 @@ public class PaidUsersList extends RecyclerView.Adapter<PaidUsersList.holder> {
         else
             holder.consultation.setTextColor(holder.consultation.getContext().getResources().getColor(R.color.theme_color));
 
-        String imgUrl = url + "doctors/" + data.get(position).getProfileImage();
+        String imgUrl = BASE_URL + "doctors/" + data.get(position).getProfileImage();
 
         GlideUrl glideUrl = new GlideUrl(imgUrl,
                 new LazyHeaders.Builder()

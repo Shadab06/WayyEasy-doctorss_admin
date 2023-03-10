@@ -1,45 +1,26 @@
 package com.wayyeasy.wayyeasydoctors.Activities;
 
-import static com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers.url;
+import static com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers.BASE_URL;
 import static com.wayyeasy.wayyeasydoctors.ComponentFiles.Constants.Constants.token;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.cardview.widget.CardView;
-
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
-import com.google.android.material.textfield.TextInputEditText;
 import com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers;
 import com.wayyeasy.wayyeasydoctors.ComponentFiles.Constants.Constants;
 import com.wayyeasy.wayyeasydoctors.CustomDialogs.ProgressDialog;
 import com.wayyeasy.wayyeasydoctors.CustomDialogs.ResponseDialog;
 import com.wayyeasy.wayyeasydoctors.Models.RealtimeCalling.single_user_booked;
-import com.wayyeasy.wayyeasydoctors.Models.RealtimeCalling.user_booked_response_model;
 import com.wayyeasy.wayyeasydoctors.Models.single_user_response_model;
 import com.wayyeasy.wayyeasydoctors.Models.verify_response_model;
 import com.wayyeasy.wayyeasydoctors.R;
 import com.wayyeasy.wayyeasydoctors.Utils.SharedPreferenceManager;
 import com.wayyeasy.wayyeasydoctors.databinding.ActivitySingleConsultationBinding;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,7 +58,7 @@ public class SingleConsultationActivity extends AppCompatActivity {
             singleConsultation.userAge.setText(user.getAge());
             singleConsultation.consultation.setText(user.getConsultation());
 
-            String imgUrl = url + "doctors/" + user.getProfileImage();
+            String imgUrl = BASE_URL + "doctors/" + user.getProfileImage();
 
             GlideUrl glideUrl = new GlideUrl(imgUrl,
                     new LazyHeaders.Builder()

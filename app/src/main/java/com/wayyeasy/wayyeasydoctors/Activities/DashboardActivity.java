@@ -1,7 +1,6 @@
 package com.wayyeasy.wayyeasydoctors.Activities;
 
-import static com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers.url;
-
+import static com.wayyeasy.wayyeasydoctors.ComponentFiles.ApiHandlers.ApiControllers.BASE_URL;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -14,12 +13,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
@@ -36,7 +33,6 @@ import com.wayyeasy.wayyeasydoctors.R;
 import com.wayyeasy.wayyeasydoctors.Utils.NetworkChangeListener;
 import com.wayyeasy.wayyeasydoctors.Utils.SharedPreferenceManager;
 import com.wayyeasy.wayyeasydoctors.databinding.ActivityDashboardBinding;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -223,6 +219,8 @@ public class DashboardActivity extends AppCompatActivity {
                     preferenceManager.putString(Constants.specialityType, data.getSpecialityType());
                     preferenceManager.putString(Constants.mobile, data.getMobile());
                     preferenceManager.putString(Constants.price, data.getPrice());
+                    preferenceManager.putString(Constants.shiftStart, data.getShiftStart());
+                    preferenceManager.putString(Constants.shiftEnd, data.getShiftEnd());
                     preferenceManager.putString(Constants.image, data.getImage());
                     preferenceManager.putString(Constants.status, data.getStatus());
                     preferenceManager.putString(Constants.KEY_FCM_TOKEN, data.getFcmToken());
@@ -253,7 +251,7 @@ public class DashboardActivity extends AppCompatActivity {
 
             if (preferenceManager.getString(Constants.image) != null && preferenceManager.getString(Constants.image).length() > 0) {
 
-                String imgUrl = url + "doctors/" + preferenceManager.getString(Constants.image);
+                String imgUrl = BASE_URL + "doctors/" + preferenceManager.getString(Constants.image);
 
                 GlideUrl glideUrl = new GlideUrl(imgUrl,
                         new LazyHeaders.Builder()

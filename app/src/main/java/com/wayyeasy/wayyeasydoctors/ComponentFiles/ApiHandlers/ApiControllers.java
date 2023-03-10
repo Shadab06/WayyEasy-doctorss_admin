@@ -11,8 +11,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiControllers {
 
-//    public static final String url = "https://api.wayyeasy.in/api/";
-        public static final String url = "http://192.168.0.104:2001/api/";
+//    public static final String BASE_URL = "https://api.wayyeasy.in/api/";
+    public static final String BASE_URL = "http://192.168.0.100:2001/api/";
     public static ApiControllers clientObject;
     public static Retrofit retrofit;
 
@@ -26,7 +26,7 @@ public class ApiControllers {
 
     ApiControllers() {
         retrofit = new Retrofit.Builder()
-                .baseUrl(url)
+                .baseUrl(BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
